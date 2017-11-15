@@ -47,7 +47,7 @@ II SEMESTRE 2017
 
 3. [Definición de estructuras de Datos](#definición-de-estructuras-de-datos)
 
-4. [Descripción detallada y explicación de los componentes principales del servidor/cliente](#descripción-detallada-y-explicación-de-los-componentes-principales-del-servidor/cliente)
+4. [Descripción detallada y explicación de los componentes principales del servidor/cliente](#descripción-detallada-y-explicación-de-los-componentes-principales-del-servidorcliente)
 
     4.1. [Manejo de sockets](#manejo-de-sockets)
 
