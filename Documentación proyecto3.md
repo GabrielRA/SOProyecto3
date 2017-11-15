@@ -1,5 +1,5 @@
 ﻿
-PROYECTO 2
+PROYECTO 3
 
 
 GABRIEL RAMÍREZ RAMÍREZ (201020244)
@@ -47,19 +47,25 @@ II SEMESTRE 2017
 
 3. [Definición de estructuras de Datos](#definición-de-estructuras-de-Datos)
 
-4. [Descripción detallada y explicación de los componentes principales del programa](#descripción-detallada-y-explicación-de-los-componentes-principales-del-programa)
+4. [Descripción detallada y explicación de los componentes principales del servidor/cliente](#descripción-detallada-y-explicación-de-los-componentes-principales-del-servidor/cliente)
 
-    4.1. [Mecanismo de acceso a archivos y directorios](#mecanismo-de-acceso-a-archivos-y-directorios)
+    4.1. [Manejo de sockets](#manejo-de-sockets)
 
-    4.2. [Estructura de la tabla de asignación de espacio](#estructura-de-la-tabla-de-asignación-de-espacio)
+    4.2. [Manejo de solicitudes](#manejo-de-solicitudes)
 
-    4.3. [Estrategia de administración de bloques libres](#estrategia-de-administración-de-bloques-libres)
+    4.3. [Rutina de transferencia](#rutina-de-transferencia)
 
-    4.4. [Procedimiento de desfragmentación del archivo (opcional)](#procedimiento-de-desfragmentación-del-archivo-opcional)
+    4.4. [Manejo de autenticación](#manejo-de-autenticación)
+	
+	4.5. [Manejo de hilos](#manejo-de-hilos)
+	
+5. [Descripción de protocolos y formatos](#descripción-de-protocolos-y-formatos)
 
-5. [Análisis de resultados de pruebas](#análisis-de-resultados-de-pruebas)
+6. [Análisis de resultados de pruebas](#análisis-de-resultados-de-pruebas)
 
-6. [Conclusiones sobre rendimiento](#conclusiones-sobre-rendimiento)
+7. [Conclusiones sobre rendimiento y correctitud](#conclusiones-sobre-rendimiento-y-correctitud)
+
+8. [Referencias Bibliográficas](#referencias-bibliográficas)
 
 
 # Introducción
@@ -173,7 +179,7 @@ Dicha struct de nombre de tar, presenta datos básicos sobre los archivos siguie
 Los datos de contenidos que se leen de los archivos que se comprimen son almacenados en el sistema usando structs y listas simples. Al inicio del archivo, se almacena información que hace referencia a los archivos o bloques vacíos de memoria. Luego de esto, comienza la información de cada uno de los archivos, cuando estos finalizan, se le agrega un bloque extra de información representando por “0”, esto para cumplir con estándares de escritura de los archivos tar.
 
 
-# Descripción detallada y explicación de los componentes principales del programa:
+# Descripción detallada y explicación de los componentes principales del servidor/cliente
 
 ## Mecanismo de acceso a archivos y directorios
 
@@ -197,6 +203,9 @@ Los espacios están indicados de manera que se pueda acceder a ellos cuando se r
 ## Procedimiento de desfragmentación del archivo (opcional)
 
 Se implementa un procedimiento de compresión, mencionado en el punto anterior, con el que se unen todos los espacios libres, a través del método `joinSpace()`, con el que se contempla el archivo tar y los archivos incluidos dentro del tar.
+
+
+# Descripción de protocolos y formatos
 
 # Pruebas de correctitud
 
@@ -247,7 +256,7 @@ Las pruebas a realizar se describirán a como sigue en una tabla, mencionando el
 | Se desfragmentan los archivos | Implementación incompleta | Se implementa el método, pero no se logra hacer la llamada directamente desde el main.|
 
 
-# Conclusiones sobre rendimiento
+# Conclusiones sobre rendimiento y correctitud
 
 De la implementación del comando star, se puede extraer las siguientes conclusiones:
 
