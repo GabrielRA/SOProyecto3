@@ -57,7 +57,7 @@ II SEMESTRE 2017
 
     4.4. [Manejo de autenticación](#manejo-de-autenticación)
 	
-	4.5. [Manejo de hilos](#manejo-de-hilos)
+    4.5. [Manejo de hilos](#manejo-de-hilos)
 	
 5. [Descripción de protocolos y formatos](#descripción-de-protocolos-y-formatos)
 
@@ -181,7 +181,7 @@ Los datos de contenidos que se leen de los archivos que se comprimen son almacen
 
 # Descripción detallada y explicación de los componentes principales del servidor/cliente
 
-## Mecanismo de acceso a archivos y directorios
+## Manejo de sockets
 
 Los archivos son leídos a través de una estructura que lee el contenido de los archivos.
 
@@ -190,19 +190,21 @@ Se implementa el método `open()` , el cual logra leer los archivos de prueba qu
 También está el método `openFile()`, que logra leer la estructura del tar, y que retorna la cantidad de elementos que posee el archivo.
 
 
-## Estructura de la tabla de asignación de espacio
+## Manejo de solicitudes
 
 La tabla de asignación del espacio es manejada en un struct o estructura que almacena los espacios ocupados y los espacios libres del tar. Estos espacios se muestran en una tabla que se imprime en consola.
 
-## Estrategia de administración de bloques libres
+## Rutina de transferencia
 
 Los bloques libres son administrados a través de un método que une o comprime los espacios para que sean asignados posteriormente a un nuevo archivo que se agregue al tar.
 
 Los espacios están indicados de manera que se pueda acceder a ellos cuando se requiera hacer uso de ellos.
 
-## Procedimiento de desfragmentación del archivo (opcional)
+## Manejo de autenticación
 
 Se implementa un procedimiento de compresión, mencionado en el punto anterior, con el que se unen todos los espacios libres, a través del método `joinSpace()`, con el que se contempla el archivo tar y los archivos incluidos dentro del tar.
+
+## Manejo de hilos
 
 
 # Descripción de protocolos y formatos
