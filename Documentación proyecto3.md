@@ -45,7 +45,7 @@ II SEMESTRE 2017
 
 2. [Descripción del problema](#descripción-del-problema)
 
-3. [Definición de estructuras de Datos](#definición-de-estructuras-de-Datos)
+3. [Definición de estructuras de Datos](#definición-de-estructuras-de-datos)
 
 4. [Descripción detallada y explicación de los componentes principales del servidor/cliente](#descripción-detallada-y-explicación-de-los-componentes-principales-del-servidor/cliente)
 
