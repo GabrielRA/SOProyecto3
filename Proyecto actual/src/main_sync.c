@@ -29,17 +29,19 @@ int main(int argc, char **argv)
 	char ch;
     char *host = NULL, *dir = NULL;
 
-	 while((ch = getopt(argc, argv, "h:d:")) != -1) {
+    printf("Ejecutando el sistema\n");
+
+	while((ch = getopt(argc, argv, "h:d:")) != -1) {
         switch (ch) 
         {
             case 'h':
-                host = optarg;
+                //host = optarg;
                 break;
             case 'd':
-                dir = optarg;
+                //dir = optarg;
                 break;
             default:
-                fprintf(stderr, "Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
+                //fprintf(stderr, "Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
                 exit(1);
         }
     }
@@ -47,10 +49,10 @@ int main(int argc, char **argv)
     createDirectory(".meta/");
     init_random_seed() ;
     
-    //  Decidir el rol del programa
+    //Decidir el rol del programa
 	if(!host && dir) 
 	{
-	    actLikeServer(dir);
+        actLikeServer(dir);
 	    
 	} else if (host && dir)
 	{

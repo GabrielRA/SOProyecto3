@@ -6,6 +6,7 @@
 #include <netdb.h>
 #include <unistd.h>
 
+#include "procs.c" 
 #include "structs.h"
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================
@@ -15,10 +16,10 @@ void Writen(int fd, void *ptr, size_t nbytes) ;
 ssize_t Readn(int fd, void *ptr, size_t nbytes) ;
 
 void scanFilesFromDirectory(Array *files, struct dirent **namelist, int n, char *directory) ;
-//void writeFileNumber(char * filename, int n) ;
-//void registerFiles(char *directory, Array *files) ;
-//void compare(char *directory, Array *added_files, Array *modified_files, Array *deleted_files) ;
-//void generateNewName(char *directory, char *oldname, char *newname);
+void writeFileNumber(char * filename, int n) ;
+void registerFiles(char *directory, Array *files) ;
+void compare(char *directory, Array *added_files, Array *modified_files, Array *deleted_files) ;
+void generateNewName(char *directory, char *oldname, char *newname);
 // =============================================================================
 
 /**
@@ -215,6 +216,8 @@ int init_client(char *hostname, char *directory)
         printf("No se pudo conectar al servidor\n") ; 
     }
     printf("El cliente se conectó\n") ;
+
+    printf("Se realiza la conexiòn con èxito\n");
     
     //  Iniciar la comunicación con el servidor
 
