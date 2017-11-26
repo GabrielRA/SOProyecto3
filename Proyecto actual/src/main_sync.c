@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "server.c"
-#include "client.c"
 #include "structs.h"
+#include "client.c"
+#include "server.c"
+
 
 
 void init_random_seed();
@@ -35,13 +36,13 @@ int main(int argc, char **argv)
         switch (ch) 
         {
             case 'h':
-                //host = optarg;
+                host = optarg;
                 break;
             case 'd':
-                //dir = optarg;
+                dir = optarg;
                 break;
             default:
-                //fprintf(stderr, "Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
+                fprintf(stderr, "Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
                 exit(1);
         }
     }

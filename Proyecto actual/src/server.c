@@ -7,7 +7,6 @@
 #include <unistd.h>
 
 #include <dirent.h>
-
 #include "structs.h"
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================

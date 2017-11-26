@@ -7,7 +7,6 @@
 #include <errno.h>
 
 #include "structs.h"
-#include 
 
 
 void get_file(int soc, struct sync_file_message received_packet, int filesize) ;

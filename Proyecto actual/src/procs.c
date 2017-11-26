@@ -1,18 +1,20 @@
 
 #include "structs.h"
 
+
 #include <string.h>
 #include <time.h>
 #include <sys/stat.h>
 #include <dirent.h>
 
+
+
+//  FUNCIONES PARA LA COMPARACIÓN DE LISTADOS DE DIRECTORIO ====================
+// =============================================================================
 int in_set( Array *a, int len,  char *match);
 void diff(Array *x, int lenx, Array *y, int leny, Array *res);
 void diffModified(Array *x, int lenx, Array *y, int leny, Array *res);
 void compare(char *directory, Array *added_files, Array *modified_files, Array *deleted_files) ;
-
-//  FUNCIONES PARA LA COMPARACIÓN DE LISTADOS DE DIRECTORIO ====================
-// =============================================================================
 
 /**
  *  Determina si un elemento se encuentra en un listado de directorio
