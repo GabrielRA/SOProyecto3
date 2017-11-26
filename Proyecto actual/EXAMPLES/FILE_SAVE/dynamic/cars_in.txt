@@ -1,6 +1,0 @@
-5
-BMW red 1500 80000
-Opel black 950 15000
-Mercedes white 2500 100000
-Ferrari red 1700 2000000
-Dodge blue 1800 750000
