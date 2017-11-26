@@ -74,7 +74,7 @@ int filter(const struct dirent * dir)
     const char *s = dir -> d_name;
     if (s[0] == '.') return 0;
     else if (dir->d_type == DT_DIR) return 0 ;
-    else if (strcmp(s, "main_sync") == 0) return 0 ;
+    else if (strcmp(s, "bftp") == 0) return 0 ;
     return 1;
 } 
 

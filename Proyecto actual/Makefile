@@ -2,9 +2,9 @@ PORT=31337
 
 CFLAGS= -DPORT=$(PORT) -g -Wall 
 
-all: main_sync test
+all: bftp test
 
-main_sync : main_sync.o procs.o socket.o structs.o
+bftp : bftp.o procs.o socket.o structs.o
 	gcc ${CFLAGS} -o $@ $^
 
 test :  test.o procs.o structs.o
