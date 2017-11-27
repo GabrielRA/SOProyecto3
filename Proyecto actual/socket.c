@@ -9,8 +9,8 @@
 #include "structs.h"
 
 
-void get_file(int soc, struct sync_file_message received_packet, int filesize) ;
-void send_file(int soc, char* filename, int size) ;
+void get(int soc, struct sync_file_message received_packet, int filesize) ;
+void put(int soc, char* filename, int size) ;
 ssize_t	writen(int fd, const void *vptr, size_t n) ;
 void Writen(int fd, void *ptr, size_t nbytes) ;
 ssize_t readn(int fd, void *vptr, size_t n) ;
@@ -24,7 +24,7 @@ ssize_t Readn(int fd, void *ptr, size_t nbytes) ;
  * received_packet : paquete recibido con el bufer con el contenido del archivo.
  * filesize : tamaño del archivo por recibir.
  **/
-void get_file(int soc, struct sync_file_message received_packet, int filesize)
+void get(int soc, struct sync_file_message received_packet, int filesize)
 {
     struct flock lock ;
     int fd ;
@@ -66,7 +66,7 @@ void get_file(int soc, struct sync_file_message received_packet, int filesize)
  * @filename : nombre del archivo por enviar
  * @size : Tamaño del archivo por enviar.
  **/
-void send_file(int soc, char* filename, int size)
+void put(int soc, char* filename, int size)
 {
     struct flock lock ;
     int fd ;

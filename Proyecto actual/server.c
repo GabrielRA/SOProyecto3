@@ -10,8 +10,8 @@
 #include "structs.h"
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================
-void get_file(int soc, struct sync_file_message received_packet, int filesize) ;
-void send_file(int soc, char* filename, int size) ;
+void get(int soc, struct sync_file_message received_packet, int filesize) ;
+void put(int soc, char* filename, int size) ;
 void Writen(int fd, void *ptr, size_t nbytes) ;
 ssize_t Readn(int fd, void *ptr, size_t nbytes) ;
 
@@ -78,7 +78,7 @@ void receive_all_files(int client_socket)
 	        break;
         }
         //  Recibir los archivos del cliente
-        get_file(client_socket, received_packet, filesize) ; 
+        get(client_socket, received_packet, filesize) ; 
         
     }
 }
@@ -104,7 +104,7 @@ void process_file_changes(int client_socket, char  *directory)
                 int filesize = received_packet.size ;
                 struct sync_file_message received_file ;
                 strncpy(received_file.filename, received_packet.message, 1000);
-                get_file(client_socket, received_file, filesize) ; 
+                get(client_socket, received_file, filesize) ; 
             }
             else if (received_packet.deleted_file == 1) 
             {
@@ -151,8 +151,8 @@ void process_file_changes(int client_socket, char  *directory)
                        strncpy(m.filename, newname, 1000);
                        Writen(client_socket, &m, sizeof(m));
                        
-                       get_file(client_socket, received_packet, received_packet.size);
-                       send_file(client_socket, newname, modified_files.array[index].size) ;
+                       get(client_socket, received_packet, received_packet.size);
+                       put(client_socket, newname, modified_files.array[index].size) ;
                     }
   
                 }
@@ -161,7 +161,7 @@ void process_file_changes(int client_socket, char  *directory)
                     struct sync_file_message f ;
                     strncpy(f.filename, received_packet.message, 1000) ;
                     fopen(received_packet.message,"wb") ;
-                    get_file(client_socket, f, received_packet.size) ;
+                    get(client_socket, f, received_packet.size) ;
                 }
                 else if (received_packet.mtime  < file.modification_time)
                 {

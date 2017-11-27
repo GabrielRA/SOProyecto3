@@ -10,8 +10,8 @@
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================
 
-void get_file(int soc, struct sync_file_message received_packet, int filesize) ;
-void send_file(int soc, char* filename, int size) ;
+void get(int soc, struct sync_file_message received_packet, int filesize) ;
+void put(int soc, char* filename, int size) ;
 void Writen(int fd, void *ptr, size_t nbytes) ;
 ssize_t Readn(int fd, void *ptr, size_t nbytes) ;
 
@@ -96,7 +96,7 @@ void send_all_files(int socket, char *directory)
             Writen(socket, &m, sizeof(m));
             
             //  Se envía el contenido del archivo al servidor
-            send_file(socket, files.array[i].path, fileStat.st_size); 
+            put(socket, files.array[i].path, fileStat.st_size); 
         }
     }
     
@@ -138,7 +138,7 @@ void process_added_files(int socket, Array *added_files)
             sync.added_file = 0 ;
             
             // Enviar el archivo agregado al servidor
-            send_file(socket, added_files->array[i].path, fileStat.st_size); 
+            put(socket, added_files->array[i].path, fileStat.st_size); 
         }
         
     }
@@ -184,14 +184,14 @@ void process_modified_files(int socket, Array *modified_files, char *directory)
             {
                 printf("El nombre en el servidor es: %s y su tamaño es %i\n", received_packet.filename, received_packet.size) ;
                 
-                send_file(socket, newname, modified_files->array[i].size) ;
-                get_file(socket, received_packet, received_packet.size);
+                put(socket, newname, modified_files->array[i].size) ;
+                get(socket, received_packet, received_packet.size);
             }
         }
         else if (modified_files -> array[i].modification_time > file.modification_time)
         {
             printf("El cliente tiene el más reciente que el servidor\n");
-            send_file(socket, modified_files->array[i].path, modified_files->array[i].size ) ;
+            put(socket, modified_files->array[i].path, modified_files->array[i].size ) ;
         }
         else if (modified_files->array[i].modification_time < file.modification_time)
         {
@@ -218,11 +218,11 @@ int init_client(char *hostname, char *directory)
     }
     printf("El cliente se conectó\n") ;
 
-    printf("Se realiza la conexiòn con èxito\n");
+    printf("Se realiza la conexiòn con éxito\n");
     
     //  Iniciar la comunicación con el servidor
 
-    struct sync_message handshake ;
+    /*struct sync_message handshake ;
     struct sync_message response;
     strncpy(handshake.message, "Sincronizar archivos", 900);
     
@@ -251,6 +251,7 @@ int init_client(char *hostname, char *directory)
         freeArray(&added_files);
         freeArray(&modified_files);
     }
+    */
     
     //  Registrar el estado en el que queda el directorio
     Array files;
