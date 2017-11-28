@@ -180,8 +180,7 @@ void process_file_changes(int client_socket, char  *directory)
 	        fflush(stdout);
 	        break;
         }
-    }
-    
+    }   
 }
 
 

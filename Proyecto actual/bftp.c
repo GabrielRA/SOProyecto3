@@ -5,28 +5,10 @@
 
 #include "structs.h"
 #include "client.c"
-#include "server.c"
-
-/*
-
-void init_random_seed();
 
 
-void actLikeClient(char *directory, char *hostname)
-{
-    printf("CLIENTE ======== directorio: %s , y el servidor: %s \n", directory, hostname);
-    init_client(hostname, directory);
-}
 
-void actLikeServer(char *directory)
-{
-    printf("SERVIDOR ======== directorio: %s \n", directory);
-    init_server(directory) ;
-}*/
-
-
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
 	char ch;
     char *host = NULL, *dir = NULL;
 
@@ -38,27 +20,62 @@ int main(int argc, char **argv)
     printf("--- Cantidad de parámetros en la entrada: %d\n\n", argc );
 
     int chosen = 0;
-    if (argc == 2){ 
+    if (argc >= 2){ 
 
         if (strcmp(argv[1], "open") == 0){
             open = 1;
             chosen = 1;
-            printf("---------->  Abriendo una nueva conexión\n\n");
+            if (argc == 4){
+                printf("---------->  Abriendo una nueva conexión\n\n");
+                printf("    1. Relizar una conexión\n");
+                printf("    2. Esperar una conexión\n\n");
+                printf("Digite una opción a ejecutar: ");
+                int option = 0;
+                scanf("%d", &option);
+
+                printf("La opción digitada es: %d\n\n", option);
+                switch(option){
+                    case 1:
+                    host = argv[2];
+                    dir = argv[3];
+                    init_client(host, dir);
+                    break;
+
+                    case 2:
+                    dir = argv[2];
+                    init_server(dir);
+                    break;
+
+                    default:
+                    printf("Digite una opción correcta\n");
+                }
+            }
+            else{
+                printf("No se ha podido realizar la conexión. Datos incorrectos o insuficientes\n\n"\
+                    "   ./bftp open <host server> <directory>\n\n");
+            }
         }
         if (strcmp(argv[1], "close") == 0){
             close = 1;
             chosen = 1;
-            printf("---------->  Cerrando una nueva conexión\n\n");
+            if (argc == 3){
+                printf("---------->  Cerrando una conexión\n\n");
+                dir = argv[2];
+                init_server(dir);
+            }
         }
         if (strcmp(argv[1], "quit") == 0){
             quit = 1;
             chosen = 1;
-            printf("---------->  Saliendo del sistema\n\n");
+            if (argc >= 3){
+                printf("---------->  Saliendo del sistema\n\n");
+            }
         }
         if (strcmp(argv[1], "get") == 0){
             get = 1;
             chosen = 1;
             printf("---------->  Recibiendo un archivo de una conexión remota\n\n");
+            //get()
         }
         if (strcmp(argv[1], "lcd") == 0){
             lcd = 1;
@@ -97,6 +114,9 @@ int main(int argc, char **argv)
             "   pwd:       mostrar el directorio del archivo remoto\n");
         }
     }
+
+    return 0;
+}
 
 
 
@@ -157,8 +177,31 @@ int main(int argc, char **argv)
 	    exit(1);
 	}
     */
-	
-	return 0 ;
-	
-    
+
+
+
+
+
+
+
+
+
+
+//#include "server.c"
+
+/*
+
+void init_random_seed();
+
+
+void actLikeClient(char *directory, char *hostname)
+{
+    printf("CLIENTE ======== directorio: %s , y el servidor: %s \n", directory, hostname);
+    init_client(hostname, directory);
 }
+
+void actLikeServer(char *directory)
+{
+    printf("SERVIDOR ======== directorio: %s \n", directory);
+    init_server(directory) ;
+}*/

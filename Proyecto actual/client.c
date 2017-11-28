@@ -7,6 +7,8 @@
 #include <unistd.h>
 
 #include "structs.h"
+#include <dirent.h>
+
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================
 
@@ -21,6 +23,10 @@ void registerFiles(char *directory, Array *files) ;
 void compare(char *directory, Array *added_files, Array *modified_files, Array *deleted_files) ;
 void generateNewName(char *directory, char *oldname, char *newname);
 
+int readFileCount(char *filename) ;
+void registerFiles(char *directory, Array *files) ;
+
+void compare_modified(char *directory, Array *current_files, Array *files, Array *modified_files) ;
 // =============================================================================
 
 /**
@@ -51,10 +57,46 @@ int connect_to_server(char *hostname)
     return sock ;
 }
 
+
+
+/**
+ * Configura el socket del servidor. Crea y asocia el socket a un puerto.
+ * @return: listenfd (descriptot del socket) donde se está escuchando al cliente
+ **/
+int setup()
+{
+    int socket_descriptor ;
+    struct sockaddr_in server ;
+    
+    //  Crear el socket 
+    socket_descriptor = socket(AF_INET, SOCK_STREAM , 0) ;
+    if (socket_descriptor == -1) return socket_descriptor ;
+    
+    //  Preparar la estructura sockaddr_in
+    server.sin_family = AF_INET ;
+    server.sin_addr.s_addr = INADDR_ANY ;
+    server.sin_port = htons ( 8889 ) ;
+    
+    //  Ligar
+    if( bind(socket_descriptor,(struct sockaddr *)&server, sizeof(server)) < 0)
+    {
+        return -1 ;
+    }
+    
+    //  Escuchar
+    listen(socket_descriptor , 3) ;
+    
+    return socket_descriptor ;
+}
+
+
+
 /**
  * Obtiene los archivos actuales del directorio. Se verifica si ya existe un
  * archivo de metadata con datos de archivos anteriores almacenados.
  **/
+
+/*
 void get_directory_files(char *directory, Array *files)
 {
     int n = readFileCount(".meta/count.bin");
@@ -68,13 +110,16 @@ void get_directory_files(char *directory, Array *files)
     {
         registerFiles(directory, files);
     }
-}
+}*/
+
 
 /**
  * Esta función envia un conjunto de archivos al servidor.
  * Se debe ejecutar en caso del directorio actual vacío y se debe transmitir multiples archivos
  * @param : socket : socket con la conexión al servidor.
  **/
+
+/*
 void send_all_files(int socket, char *directory)
 {
     Array files ;
@@ -102,7 +147,9 @@ void send_all_files(int socket, char *directory)
     
     freeArray(&files);
 }
+*/
 
+/*
 
 //  Procesar los archivos eliminados
 void process_deleted_files(int socket, Array *deleted_files)
@@ -120,6 +167,9 @@ void process_deleted_files(int socket, Array *deleted_files)
     }
     
 }
+*/
+
+/*
 //  Procesar los archivos agregados
 void process_added_files(int socket, Array *added_files)
 {
@@ -142,7 +192,9 @@ void process_added_files(int socket, Array *added_files)
         }
         
     }
-}
+}*/
+
+/*
 //Procesar los archivos modificados
 void process_modified_files(int socket, Array *modified_files, char *directory)
 {
@@ -198,7 +250,7 @@ void process_modified_files(int socket, Array *modified_files, char *directory)
             printf("El servidor tiene el màs reciente que el cliente\n");
         }
     }
-}
+}*/
 
 
 /**
@@ -214,12 +266,15 @@ int init_client(char *hostname, char *directory)
     
     if (sock < 0)
     {
-        printf("No se pudo conectar al servidor\n") ; 
+        printf("--- No se pudo conectar con el otro cliente\n") ; 
+        printf("--- Verifique que el otro cliente esté conectado\n\n");
     }
-    printf("El cliente se conectó\n") ;
+    else{
+        printf("--- El cliente se conectó\n") ;
 
-    printf("Se realiza la conexiòn con éxito\n");
+        printf("--- Se realiza la conexión con éxito\n");
     
+    }
     //  Iniciar la comunicación con el servidor
 
     /*struct sync_message handshake ;
@@ -254,10 +309,79 @@ int init_client(char *hostname, char *directory)
     */
     
     //  Registrar el estado en el que queda el directorio
-    Array files;
-    registerFiles(directory, &files) ;
+    //Array files;
+    //registerFiles(directory, &files) ;
+    
     close(sock) ;
-    freeArray(&files) ;
+    //freeArray(&files) ;
  
+    return 0 ;
+}
+
+
+/**
+ * Realiza la inicialización del lado del servidor.
+ * @param : directory : nombre del directorio que se desea sincronizar
+ * @return : codigo de éxito en la comunicación
+ **/
+int init_server(char *directory)
+{
+    //  Crear el directorio
+    createDirectory(directory) ;
+    
+    int client_socket , c ;
+    struct sockaddr_in client ;
+    int socket_desc = setup() ;
+    
+    if (socket_desc < 0)
+    {
+        perror ("No se pudo crear el socket del server") ;
+        return -1 ;
+    }
+    else
+    {
+        printf("\n\n¡Se ha conectado con un nuevo cliente. Estoy en espera de recibir o enviar archivos \n") ;
+        c = sizeof(struct sockaddr_in) ;
+        client_socket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c) ;
+        if (client_socket < 0)
+        {
+            perror("No se pudo aceptar al cliente") ;
+            return -1 ;
+        }
+        printf("Conexión aceptada \n") ;
+        
+        
+        //  Iniciar la comunicación con el client
+      /*
+        Array files ;
+        struct sync_message handshake , response ;
+       
+        int n = Readn(client_socket, &handshake, sizeof(handshake)) ;
+        int cant_files = 0 ;
+        if (n > 0)
+        {
+            //  Corroborar si el servidor está vacío
+            cant_files = readFileCount(".meta/count.bin");
+            if (cant_files == 0) response.empty_directory = 1 ;
+            else response.empty_directory = 0 ;
+            
+            //  Avisar al cliente que el servidor está vacío y listo para recibir todos los archivos
+            Writen(client_socket, &response, sizeof(response));
+        }
+        
+        /*
+        //  Como el directorio está vacío, recibo todos los archivos del cliente
+        if (cant_files == 0) receive_all_files(client_socket) ;
+        //  El directorio del server no está vacío, así que hay que verificar cambios
+        else if (cant_files > 0) process_file_changes(client_socket, directory) ;
+        
+        //  Registrar el estado en el que queda el directorio
+        registerFiles(directory, &files) ;
+        */
+        close(client_socket) ;
+        //freeArray(&files) ;
+        
+        
+    }
     return 0 ;
 }
