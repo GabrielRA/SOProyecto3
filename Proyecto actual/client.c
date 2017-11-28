@@ -352,7 +352,7 @@ int init_server(char *directory)
         
         
         //  Iniciar la comunicación con el client
-      /*
+        /*
         Array files ;
         struct sync_message handshake , response ;
        
