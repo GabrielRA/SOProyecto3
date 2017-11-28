@@ -27,7 +27,7 @@ int main(int argc, char **argv){
             chosen = 1;
             if (argc == 4){
                 printf("---------->  Abriendo una nueva conexión\n\n");
-                printf("    1. Relizar una conexión\n");
+                printf("    1. Realizar una conexión\n");
                 printf("    2. Esperar una conexión\n\n");
                 printf("Digite una opción a ejecutar: ");
                 int option = 0;
@@ -117,91 +117,3 @@ int main(int argc, char **argv){
 
     return 0;
 }
-
-
-
-
-/*
-
-            case 'c': close = 1; break;             
-            case 'q': quit = 1; break; 
-            case 'd': cd = 1; break; 
-            case 'g': get = 1; break; 
-            case 'l': lcd = 1; break; 
-            case 's': ls = 1; break; 
-            case 'p': put = 1; break; 
-            case 'w': pwd = 1; break;
-            default:
-                fprintf(stderr, "Error: Bad option: %s\n", argv[1]);
-                fprintf(stderr, "Do '%s help' for help\n", argv[0]);
-                return 0;
-                break;
-        }
-    }*/
-
-    /*
-
-	while((ch = getopt(argc, argv, "h:d:")) != -1) {
-        switch (ch) 
-        {
-            case 'h':
-                host = optarg;
-                break;
-            case 'd':
-                dir = optarg;
-                break;
-            default:
-                fprintf(stderr, "Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
-                exit(1);
-        }
-    }
-    */
-    
-    //createDirectory(".meta/");
-    //init_random_seed() ;
-    
-    //Decidir el rol del programa
-
-    /*
-	if(!host && dir) 
-	{
-        actLikeServer(dir);
-	    
-	} else if (host && dir)
-	{
-	    actLikeClient(dir, host) ;
-	}
-	else
-	{
-	    fprintf(stderr, "Error \n Uso: CLIENT -> ./program -h <server hostname> -d <directory>\n SERVER -> ./program -d <directory> \n");
-	    exit(1);
-	}
-    */
-
-
-
-
-
-
-
-
-
-
-//#include "server.c"
-
-/*
-
-void init_random_seed();
-
-
-void actLikeClient(char *directory, char *hostname)
-{
-    printf("CLIENTE ======== directorio: %s , y el servidor: %s \n", directory, hostname);
-    init_client(hostname, directory);
-}
-
-void actLikeServer(char *directory)
-{
-    printf("SERVIDOR ======== directorio: %s \n", directory);
-    init_server(directory) ;
-}*/

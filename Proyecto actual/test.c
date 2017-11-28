@@ -56,41 +56,7 @@ int main(void)
     showFiles(&files, n);
     
 
-    //  Listado anterior  
-    
-    /*
-    int n = readFileCount(".meta/count.bin");
-    initArray(&files, n);
-    readFromFile(".meta/files_data.bin", &files);
-    
-    
-    struct dirent **namelist;
-    int np;
-    np = scandir(".", &namelist, &filter, alphasort);
-    initArray(&current_files, np);
-    scanFilesFromDirectory(&current_files, namelist, np);
-    
-    printf("Los archivos que estaban antes ======================================\n");
-    showFiles(&files, n);
-    printf(" Actualmente hay %i archivos ========================================\n", np);
-    showFiles(&current_files, np);
-    
-    
-    printf(" Y la diferencia ========================================\n");
-    
-    diff(&files, n, &current_files, np, &deleted_files);
-    printf("\t\tELIMINADOS %i\n", (int)deleted_files.used);
-    showFiles(&deleted_files, (int)deleted_files.used);
-    
-    diff(&current_files, np, &files, n, &added_files);
-    printf("\t\tAGREGADOS %i\n", (int)added_files.used);
-    showFiles(&added_files, (int)added_files.used);
-    
-    diffModified(&files, n, &current_files, np, &modified_files);
-    printf("EN COMÚN modificados (%i) ============================================\n", (int)modified_files.used);
-    showFiles(&modified_files, (int)modified_files.used);
-   */
-   
+
    
     freeArray(&current_files);
     freeArray(&deleted_files);

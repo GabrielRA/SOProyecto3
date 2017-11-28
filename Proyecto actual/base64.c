@@ -21,6 +21,7 @@ int Base64Encode(char *input, char *output, int oplen);
 int encodeblock(char *input, char *output, int oplen);
 int Base64Decode(char *input, char *output, int oplen);
 int decodeblock(char *input, char *output, int oplen);
+int authenticate();
 /* Its always better to move the macros and function prototypes to a header file */
 
 int decodeblock(char *input, char *output, int oplen){
@@ -103,7 +104,7 @@ int Base64Encode(char *input, char *output, int oplen){
    return rc;
 }
 
-int main(void) {
+int authenticate() {
    int rc = 0;
    //int seleccion = 0;
    char usuario[BUFFFERLEN + 1], clave[BUFFFERLEN + 1];
@@ -148,5 +149,5 @@ int main(void) {
       }
    }
 
-   return rc;
+   return ret;
 }     

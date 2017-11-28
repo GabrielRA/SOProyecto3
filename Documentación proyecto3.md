@@ -70,9 +70,10 @@ II SEMESTRE 2017
 
 # Introducción
 
-Diariamente, cuando interactuamos con algún sistema operativos,directa o indirectamente estamos trabajando con archivos. La manipulación de archivos está presente en los sistemas operativos desde su creación y aunque todos tienen diversos formatos para administrarlos, internamente son muy similares. 
+El manejo a distancia de los archivos conviene en un reto enorme, donde se requieren computadoras conectadas entre si, a través de una red.
 
-En este documento, se plantea una solución a un problema que se vuelve recurrente cuando se trabaja con múltiples archivos y es necesario ya sea ahorrar espacio en disco o trasladar dichos archivos de un lado a otro, comúnmente al enviar archivos por medio de correo electrónico, la creación de un archivo tar.
+Un programa que se encargue de realizar este manejo de archivos remotos es requerido, ya que se mejora la velocidad de envío y almaenaje de directorios y documentos, entre otros.
+
 
 Un archivo tar, es una especie de contenedor que permite el almacenaje de uno o más archivos, distribuidos libremente o en carpetas, si función principal no es el comprimir el tamaño de los archivos, como en el caso de los archivos zip, aunque en ocasiones puede realizar dicho labor.
 

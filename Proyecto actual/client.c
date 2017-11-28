@@ -8,6 +8,7 @@
 
 #include "structs.h"
 #include <dirent.h>
+#include "base64.c"
 
 
 //  PROTOTIPOS DE LAS FUNCIONES POR USAR =======================================
@@ -89,170 +90,6 @@ int setup()
     return socket_descriptor ;
 }
 
-
-
-/**
- * Obtiene los archivos actuales del directorio. Se verifica si ya existe un
- * archivo de metadata con datos de archivos anteriores almacenados.
- **/
-
-/*
-void get_directory_files(char *directory, Array *files)
-{
-    int n = readFileCount(".meta/count.bin");
-    
-    if (n > 0)
-    {
-        initArray(files, n);
-        readFromFile(".meta/files_data.bin", files);
-    }
-    else
-    {
-        registerFiles(directory, files);
-    }
-}*/
-
-
-/**
- * Esta función envia un conjunto de archivos al servidor.
- * Se debe ejecutar en caso del directorio actual vacío y se debe transmitir multiples archivos
- * @param : socket : socket con la conexión al servidor.
- **/
-
-/*
-void send_all_files(int socket, char *directory)
-{
-    Array files ;
-    
-    struct stat fileStat;
-        
-    get_directory_files(directory, &files) ;
-    
-    int i;
-    for (i = 0; i < files.size; i++)
-    {
-        if(stat(files.array[i].path, &fileStat) == 0) 
-        {
-            struct sync_file_message m;
-            m.size = fileStat.st_size;
-            strncpy(m.filename, files.array[i].path, 1000);
-            
-            //  Enviar datos básicos sobre el archivo antes - nombre y tamaño
-            Writen(socket, &m, sizeof(m));
-            
-            //  Se envía el contenido del archivo al servidor
-            put(socket, files.array[i].path, fileStat.st_size); 
-        }
-    }
-    
-    freeArray(&files);
-}
-*/
-
-/*
-
-//  Procesar los archivos eliminados
-void process_deleted_files(int socket, Array *deleted_files)
-{
-    int i ;
-    
-    for (i = 0; i < deleted_files->used; i ++)
-    {
-        struct sync_message sync ;
-        sync.deleted_file = 1 ;
-        strncpy(sync.message, deleted_files->array[i].path, 1000);
-        Writen(socket, &sync, sizeof(sync));
-        sync.deleted_file = 0 ;   
-        
-    }
-    
-}
-*/
-
-/*
-//  Procesar los archivos agregados
-void process_added_files(int socket, Array *added_files)
-{
-    int i ;
-    for (i = 0; i < added_files->used; i ++)
-    {
-        struct sync_message sync ;
-        struct stat fileStat;
-        
-        if(stat(added_files->array[i].path, &fileStat) == 0) 
-        {
-            sync.added_file = 1 ;
-            sync.size = fileStat.st_size ;
-            strncpy(sync.message, added_files->array[i].path, 1000) ;
-            Writen(socket, &sync, sizeof(sync)) ;
-            sync.added_file = 0 ;
-            
-            // Enviar el archivo agregado al servidor
-            put(socket, added_files->array[i].path, fileStat.st_size); 
-        }
-        
-    }
-}*/
-
-/*
-//Procesar los archivos modificados
-void process_modified_files(int socket, Array *modified_files, char *directory)
-{
-    int i ;
-    for (i = 0; i < modified_files->used; i ++)
-    {
-        struct sync_message sync ;
-        file_data file ;
-        
-        //  Preparar los datos del archivo modificado para ser enviados al servidor
-        strncpy(sync.name, modified_files->array[i].name, 1000);
-        strncpy(sync.message, modified_files->array[i].path, 1000);
-        sync.mtime = modified_files->array[i].modification_time ;
-        sync.size = modified_files->array[i].size ;
-        
-        //  Enviar los datos del archivo modificado al servidor
-        sync.modified_file = 1 ;
-        Writen(socket, &sync, sizeof(sync)) ;
-        sync.modified_file = 0 ;
-        
-        
-        //  Obtener la respuesta del servidor
-        int n = Readn(socket, &file, sizeof(file));
-       
-        if (file.modification_time == 0)
-        {
-            char newname[1000];
-            generateNewName(directory,modified_files->array[i].name, newname) ;
-            rename(modified_files->array[i].path, newname) ;
-            //printf("El archivo está cambiado en ambas partes y su nuevo nombre en el cliente es %s\n", newname) ;
-            struct sync_file_message m, received_packet;
-            m.size = modified_files->array[i].size;
-            strncpy(m.filename, newname, 1000);
-            
-            Writen(socket, &m, sizeof(m));
-            
-            n = Readn(socket, &received_packet, sizeof(received_packet));
-            if (n > 0)
-            {
-                printf("El nombre en el servidor es: %s y su tamaño es %i\n", received_packet.filename, received_packet.size) ;
-                
-                put(socket, newname, modified_files->array[i].size) ;
-                get(socket, received_packet, received_packet.size);
-            }
-        }
-        else if (modified_files -> array[i].modification_time > file.modification_time)
-        {
-            printf("El cliente tiene el más reciente que el servidor\n");
-            put(socket, modified_files->array[i].path, modified_files->array[i].size ) ;
-        }
-        else if (modified_files->array[i].modification_time < file.modification_time)
-        {
-            printf("El servidor tiene el màs reciente que el cliente\n");
-        }
-    }
-}*/
-
-
 /**
  * Realiza la inicialización del lado del cliente.
  * @param : directory : nombre del directorio que se desea sincronizar
@@ -261,60 +98,31 @@ void process_modified_files(int socket, Array *modified_files, char *directory)
 int init_client(char *hostname, char *directory)
 {
     int sock ;
-    
-    sock = connect_to_server(hostname) ;
-    
-    if (sock < 0)
-    {
-        printf("--- No se pudo conectar con el otro cliente\n") ; 
-        printf("--- Verifique que el otro cliente esté conectado\n\n");
+    int ret = 0;
+    if (ret = authenticate() == 0) {
+
+        
+        sock = connect_to_server(hostname) ;
+        
+        if (sock < 0)
+        {
+            printf("--- No se pudo conectar con el otro cliente\n") ; 
+            printf("--- Verifique que el otro cliente esté conectado\n\n");
+        }
+        else{
+            printf("--- El cliente se conectó\n") ;
+
+            printf("--- Se realiza la conexión con éxito\n");
+        
+        }
     }
     else{
-        printf("--- El cliente se conectó\n") ;
-
-        printf("--- Se realiza la conexión con éxito\n");
-    
+        printf("--- No se ha logrado una correcta autenticación\n"\
+            "Intente con un usuario y contraseña registrado\n\n");
     }
-    //  Iniciar la comunicación con el servidor
-
-    /*struct sync_message handshake ;
-    struct sync_message response;
-    strncpy(handshake.message, "Sincronizar archivos", 900);
     
-    Writen(sock, &handshake, sizeof(handshake)) ;
-    
-    int n = Readn(sock, &response, sizeof(response)) ;
-   
-    if (n > 0 && response.empty_directory == 1)
-    {
-        send_all_files(sock, directory) ;
-    }
-    else
-    {
-        printf("Procesando los archivos del cliente\n") ;
-        
-        Array deleted_files, modified_files, added_files ;
-        
-        compare(directory, &added_files, &modified_files, &deleted_files) ;
-    
-        if (added_files.used > 0) process_added_files(sock, &added_files) ;
-        if (deleted_files.used > 0) process_deleted_files(sock, &deleted_files) ;
-        if (modified_files.used > 0) process_modified_files(sock, &modified_files, directory) ;
-        if (added_files.used == 0 && modified_files.used == 0 && added_files.used == 0) printf("NO hay nuevos cambios en el directorio %s \n", directory) ;
-        
-        freeArray(&deleted_files);
-        freeArray(&added_files);
-        freeArray(&modified_files);
-    }
-    */
-    
-    //  Registrar el estado en el que queda el directorio
-    //Array files;
-    //registerFiles(directory, &files) ;
     
     close(sock) ;
-    //freeArray(&files) ;
- 
     return 0 ;
 }
 
@@ -350,38 +158,7 @@ int init_server(char *directory)
         }
         printf("Conexión aceptada \n") ;
         
-        
-        //  Iniciar la comunicación con el client
-        /*
-        Array files ;
-        struct sync_message handshake , response ;
-       
-        int n = Readn(client_socket, &handshake, sizeof(handshake)) ;
-        int cant_files = 0 ;
-        if (n > 0)
-        {
-            //  Corroborar si el servidor está vacío
-            cant_files = readFileCount(".meta/count.bin");
-            if (cant_files == 0) response.empty_directory = 1 ;
-            else response.empty_directory = 0 ;
-            
-            //  Avisar al cliente que el servidor está vacío y listo para recibir todos los archivos
-            Writen(client_socket, &response, sizeof(response));
-        }
-        
-        /*
-        //  Como el directorio está vacío, recibo todos los archivos del cliente
-        if (cant_files == 0) receive_all_files(client_socket) ;
-        //  El directorio del server no está vacío, así que hay que verificar cambios
-        else if (cant_files > 0) process_file_changes(client_socket, directory) ;
-        
-        //  Registrar el estado en el que queda el directorio
-        registerFiles(directory, &files) ;
-        */
-        close(client_socket) ;
-        //freeArray(&files) ;
-        
-        
+        close(client_socket) ;        
     }
     return 0 ;
 }
